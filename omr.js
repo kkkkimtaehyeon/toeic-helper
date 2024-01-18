@@ -8,17 +8,28 @@ const choice = ['A', 'B', 'C', 'D'];
 
 const circle = document.getElementsByClassName('circle');
 
+let userAnswerSheet = new Map();
+
 const checkTheAnswer = (event, aToDList) =>{
 
     if(event.target.classList[1] === 'clicked'){
     }
     else{
         for(let i = 0; i < aToDList.childNodes.length; i++){
-            console.log(aToDList.childNodes[i]);
+            
             aToDList.childNodes[i].classList.remove('clicked');
         }
         event.target.classList.add('clicked');
+
+        console.log(aToDList.className);
+        console.log(aToDList.className.split(" ")[1]);
         console.log(event.target.textContent);
+
+        let problemNumber = aToDList.className.split(" ")[1];
+        let userAnswer = event.target.textContent;
+
+        userAnswerSheet.set(problemNumber, userAnswer);
+        
     }
 }
 
@@ -26,7 +37,7 @@ const createAtoD = (section, start, end) => {
 
     for(let j = start; j <= end; j++){
         let index = j; 
-        let className = 'problem'+ index.toString();
+        let className = 'problem '+ index.toString();
 
         let aToDList = document.createElement('li');
         aToDList.className= className;
@@ -52,7 +63,7 @@ const createAtoC = (section, start, end) => {
 
     for(let j = start; j <= end; j++){
         let index = j; 
-        let className = 'problem'+ index.toString();
+        let className = 'problem '+ index.toString();
 
         let aToCList = document.createElement('li');
         aToCList.className= className;
@@ -62,12 +73,12 @@ const createAtoC = (section, start, end) => {
     
             div.className = 'circle';
             div.innerHTML = choice[i];
-            div.addEventListener('click', (event)=>{
-                event.target.classList.add('clicked');
-            });
-    
+
             aToCList.appendChild(div);
         }
+        aToCList.addEventListener('click', (event)=>{
+            checkTheAnswer(event,aToCList);
+        });
 
         section.appendChild(aToCList);
 
