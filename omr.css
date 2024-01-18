@@ -1,19 +1,20 @@
 .container{
     display: grid;
     height: 500px;
-    width: 500px;
-    border: solid black 1px;
+    width: 600px;
+    border: solid gray 10px;
     
     grid-template-columns: repeat(5,1fr);
-    grid-template-rows: 50px 400px;
+    grid-template-rows: 50px 440px;
     grid-gap: 10px;
 }
 body {
     counter-reset: number;
 }
 
-div[class*="section"] {
-    counter-increment: number;
+div[id*="section"]:not(#section5) {
+    padding-left: 5px;
+    border-right: solid gray 5px;
 }
 
 li {
@@ -23,7 +24,7 @@ li {
 
 li::before {
     content: counter(number) "."; /* 전역 카운터와 로컬 카운터를 조합하여 마커 생성 */
-    margin-right: 5px; /* 마커와 텍스트 사이 간격 조절 */
+    margin-right: 10px; /* 마커와 텍스트 사이 간격 조절 */
   }
 
 
@@ -34,36 +35,41 @@ li::before {
     height: 40px;
 
     text-align: center;
-    border: solid black 1px;
+    border-bottom: solid gray 10px;
 }
-
+.head{
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 800;
+}
 #section1{
     grid-column: 1/2;
     grid-row: 2/3;
 
 }
 
-.section2{
+#section2{
     grid-column: 2/3;
     grid-row: 2/3;
 
 }
 
-.section3{
+#section3{
     grid-column: 3/4;
     grid-row: 2/3;
 
 }
 
-.section4{
+#section4{
     grid-column: 4/5;
     grid-row: 2/3;
 
 }
 
-.section5{
+#section5{
     grid-column: 5/6;
     grid-row: 2/3;
+    padding-left: 5px;
 
 }
 
