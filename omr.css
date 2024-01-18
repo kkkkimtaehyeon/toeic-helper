@@ -8,6 +8,25 @@
     grid-template-rows: 50px 400px;
     grid-gap: 10px;
 }
+body {
+    counter-reset: number;
+}
+
+div[class*="section"] {
+    counter-increment: number;
+}
+
+li {
+    counter-increment: number;
+    list-style: none; /* 기본 마커 숨김 */
+}
+
+li::before {
+    content: counter(number) "."; /* 전역 카운터와 로컬 카운터를 조합하여 마커 생성 */
+    margin-right: 5px; /* 마커와 텍스트 사이 간격 조절 */
+  }
+
+
 
 .header{
     grid-column: 1/6;

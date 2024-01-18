@@ -49,6 +49,7 @@ const createAtoD = (section, start, end) => {
             div.innerHTML = choice[i];
     
             aToDList.appendChild(div);
+            aToDList.mark
             
         }
         aToDList.addEventListener('click',(event)=>{
