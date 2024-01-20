@@ -1,0 +1,49 @@
+.pageSelector{
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 500px;
+    grid-gap: 50px;
+}
+
+.pageSelector img{
+    border: solid black 5px;
+    display: block;
+    max-width: 100%;
+    height: 500px;
+
+    -webkit-transition: 0.5s ease-out;
+}
+
+.pageSelector img:hover{
+    -webkit-filter: blur(2px);
+    filter: blur(2px);
+}
+
+.pageText{
+    visibility: hidden;
+    text-align: center;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+
+#goToOmr:hover .pageText{
+    visibility: visible;
+    z-index: 1;
+}
+
+#goToAnalyse:hover .pageText{
+    visibility: visible;
+    z-index: 1;
+}
+#goToAnalyse{
+    position: relative;
+}
+#goToOmr{
+    position: relative;
+}
+
+h2{
+}
