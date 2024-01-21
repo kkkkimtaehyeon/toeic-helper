@@ -13,10 +13,12 @@ div[id*="section"]:not(#section5) {
     border-right: solid gray 5px;
 }
 
-li {
-    list-style: none;
+span{
+    display: inline;
 }
-
+div{
+    display: inline-block;
+}
 .header{
     grid-column: 1/6;
     grid-row: 1/2;

@@ -10,12 +10,13 @@ h2{
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 500px;
     grid-gap: 50px;
+
 }
 
 .pageSelector img{
     border: solid black 5px;
     display: block;
-    max-width: 100%;
+    width: 500px;
     height: 500px;
 
     -webkit-transition: 0.5s ease-out;
