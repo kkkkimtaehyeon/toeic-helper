@@ -8,26 +8,14 @@
     grid-template-rows: 50px 440px;
     grid-gap: 10px;
 }
-body {
-    counter-reset: number;
-}
-
 div[id*="section"]:not(#section5) {
     padding-left: 5px;
     border-right: solid gray 5px;
 }
 
 li {
-    counter-increment: number;
-    list-style: none; /* 기본 마커 숨김 */
+    list-style: none;
 }
-
-li::before {
-    content: counter(number) "."; /* 전역 카운터와 로컬 카운터를 조합하여 마커 생성 */
-    margin-right: 10px; /* 마커와 텍스트 사이 간격 조절 */
-  }
-
-
 
 .header{
     grid-column: 1/6;

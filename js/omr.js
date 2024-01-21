@@ -4,6 +4,10 @@ const section3 = document.getElementById('section3');
 const section4 = document.getElementById('section4');
 const section5 = document.getElementById('section5');
 
+const lcBtn = document.getElementById('lcBtn');
+const rcBtn = document.getElementById('rcBtn');
+const omrSave = document.getElementById('omrSave');
+
 const choice = ['A', 'B', 'C', 'D'];
 
 const circle = document.getElementsByClassName('circle');
@@ -32,6 +36,11 @@ const checkTheAnswer = (event, aToDList) =>{
         
     }
 }
+const attachIndexToProblem = (index, list) =>{//문제 번호를 붙여줌
+    let span = document.createElement('span');
+    span.innerHTML = index.toString() + '. ';
+    list.appendChild(span);
+}
 
 const createAtoD = (section, start, end) => {
 
@@ -41,6 +50,8 @@ const createAtoD = (section, start, end) => {
 
         let aToDList = document.createElement('li');
         aToDList.className= className;
+
+        attachIndexToProblem(index,aToDList);
 
         for (let i = 0; i < 4; i++) {
             let div = document.createElement('div');
@@ -68,6 +79,8 @@ const createAtoC = (section, start, end) => {
         let aToCList = document.createElement('li');
         aToCList.className= className;
 
+        attachIndexToProblem(index,aToCList);
+
         for (let i = 0; i < 3; i++) {
             let div = document.createElement('div');
     
@@ -85,13 +98,35 @@ const createAtoC = (section, start, end) => {
     }
 }
 
-createAtoD(section1, 1, 6);
-createAtoC(section1, 7, 20);
+const createOmrLc = () =>{
+    createAtoD(section1, 1, 6);
+    createAtoC(section1, 7, 20);
 
-createAtoC(section2, 21, 31);
-createAtoD(section2, 32, 40);
+    createAtoC(section2, 21, 31);
+    createAtoD(section2, 32, 40);
 
-createAtoD(section3, 41, 60);
-createAtoD(section4, 61, 80);
-createAtoD(section5, 81, 100);
+    createAtoD(section3, 41, 60);
+    createAtoD(section4, 61, 80);
+    createAtoD(section5, 81, 100);
+}
+
+const createOmrRc = () =>{
+    createAtoD(section1, 101, 120);
+    createAtoD(section2, 121, 140);
+    createAtoD(section3, 141, 160);
+    createAtoD(section4, 161, 180);
+    createAtoD(section5, 181, 200);
+}
+
+lcBtn.addEventListener('click', () => {
+    createOmrLc();
+});
+
+rcBtn.addEventListener('click', () => {
+    createOmrRc();
+});
+
+
+
+
 
