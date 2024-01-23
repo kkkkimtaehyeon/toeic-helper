@@ -3,10 +3,12 @@ const section2 = document.getElementById('section2');
 const section3 = document.getElementById('section3');
 const section4 = document.getElementById('section4');
 const section5 = document.getElementById('section5');
+const omrTitle = document.getElementById('omrTitle');
 
 const lcBtn = document.getElementById('lcBtn');
 const rcBtn = document.getElementById('rcBtn');
 const saveBtn = document.getElementById('saveBtn');
+const gradingBtn = document.getElementById('gradingBtn');
 
 const choices = ['A', 'B', 'C', 'D'];
 
@@ -26,7 +28,7 @@ const attachIndexToProblem = (index, list) =>{
     list.appendChild(span);
 }
 
-const AtoD = (type, problemIndex) =>{
+const createChoices = (type, problemIndex) =>{
     let divContainer = document.createElement('div');
     let choicesLength;
     if(type === 'LC' && (problemIndex >= 7 && problemIndex <= 31)){
@@ -71,7 +73,7 @@ const attachChoiceListOnSection = (type, section, start, end) => {
 
         attachIndexToProblem(index, choiceList);
 
-        choiceList.appendChild(AtoD(type, index));
+        choiceList.appendChild(createChoices(type, index));
 
         section.appendChild(choiceList);
 
@@ -79,20 +81,65 @@ const attachChoiceListOnSection = (type, section, start, end) => {
 
 };
 
-attachChoiceListOnSection('LC',section1,1,20);
-attachChoiceListOnSection('LC',section2,21,40);
-attachChoiceListOnSection('LC',section3,41,60);
-attachChoiceListOnSection('LC',section4,61,80);
-attachChoiceListOnSection('LC',section5,81,100);
+const initOmr = () =>{
+    for (let i = 1; i <= 5; i++) {
+        let sectionId = "section" + i;
+        let parentElement = document.getElementById(sectionId);
+    
+        while (parentElement.firstChild) {
+            parentElement.removeChild(parentElement.firstChild);
+        }
+    }
+}
+
+const createOmrLc = () =>{
+    omrTitle.innerHTML = 'LC';
+    initOmr();
+    attachChoiceListOnSection('LC',section1,1,20);
+    attachChoiceListOnSection('LC',section2,21,40);
+    attachChoiceListOnSection('LC',section3,41,60);
+    attachChoiceListOnSection('LC',section4,61,80);
+    attachChoiceListOnSection('LC',section5,81,100);
+}
+
+const createOmrRc = () =>{
+    omrTitle.innerHTML = 'RC';
+    initOmr();
+    attachChoiceListOnSection('RC',section1,101,120);
+    attachChoiceListOnSection('RC',section2,121,140);
+    attachChoiceListOnSection('RC',section3,141,160);
+    attachChoiceListOnSection('RC',section4,161,180);
+    attachChoiceListOnSection('RC',section5,181,200);
+}
 
 
-/*lcBtn.addEventListener('click', () => {
+lcBtn.addEventListener('click', () => {
     createOmrLc();
 });
 
 rcBtn.addEventListener('click', () => {
     createOmrRc();
-});*/
+});
+
+saveBtn.addEventListener('click', () =>{
+    let jsonMap = JSON.stringify(Array.from(userAnswerSheet.entries()));
+    localStorage.setItem('userAnswerSheet', jsonMap);
+});
+
+const getUserAnswerSheet = () =>{
+    let storedData = localStorage.getItem('userAnswerSheet');
+    if(storedData){
+        let parsedData = JSON.parse(storedData);
+        let loadedUserAnswerSheet = new Map(parsedData);
+
+        return loadedUserAnswerSheet;
+    }
+    else{
+        alert('저장된 OMR이 없습니다!');
+    }
+
+}
+
 
 
 
