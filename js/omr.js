@@ -81,7 +81,8 @@ const attachChoiceListOnSection = (type, section, start, end) => {
 
 };
 
-const initOmr = () =>{
+/**omr 초기화 */
+const clearOmr = () =>{
     for (let i = 1; i <= 5; i++) {
         let sectionId = "section" + i;
         let parentElement = document.getElementById(sectionId);
@@ -94,17 +95,23 @@ const initOmr = () =>{
 
 const createOmrLc = () =>{
     omrTitle.innerHTML = 'LC';
-    initOmr();
-    attachChoiceListOnSection('LC',section1,1,20);
-    attachChoiceListOnSection('LC',section2,21,40);
-    attachChoiceListOnSection('LC',section3,41,60);
-    attachChoiceListOnSection('LC',section4,61,80);
-    attachChoiceListOnSection('LC',section5,81,100);
+    clearOmr();
+    for(let i = 1; i <= 5; i++){
+        let section = document.getElementById('section' + i);
+        let firstNumber = 1+(i-1)*20;
+        let lastNumber = i * 20;
+        attachChoiceListOnSection('LC', section, firstNumber, lastNumber);
+    }
+    // attachChoiceListOnSection('LC',section1,1,20);
+    // attachChoiceListOnSection('LC',section2,21,40);
+    // attachChoiceListOnSection('LC',section3,41,60);
+    // attachChoiceListOnSection('LC',section4,61,80);
+    // attachChoiceListOnSection('LC',section5,81,100);
 }
 
 const createOmrRc = () =>{
     omrTitle.innerHTML = 'RC';
-    initOmr();
+    clearOmr();
     attachChoiceListOnSection('RC',section1,101,120);
     attachChoiceListOnSection('RC',section2,121,140);
     attachChoiceListOnSection('RC',section3,141,160);
@@ -112,6 +119,10 @@ const createOmrRc = () =>{
     attachChoiceListOnSection('RC',section5,181,200);
 }
 
+const initOmr = () =>{
+    createOmrLc();
+}
+initOmr();
 
 lcBtn.addEventListener('click', () => {
     createOmrLc();
@@ -126,6 +137,7 @@ saveBtn.addEventListener('click', () =>{
     localStorage.setItem('userAnswerSheet', jsonMap);
 });
 
+/** 유저의 omr카드를 불러옴 */
 const getUserAnswerSheet = () =>{
     let storedData = localStorage.getItem('userAnswerSheet');
     if(storedData){
