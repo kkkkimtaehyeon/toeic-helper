@@ -7,18 +7,17 @@ h2{
 .pageSelector{
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 500px;
-    grid-gap: 50px;
+    grid-gap: 10px;
 
 }
 
 .pageSelector img{
     border: solid black 5px;
     display: block;
-    width: 500px;
-    height: 500px;
-
+    width: 400px;
+    height: 400px;
     -webkit-transition: 0.5s ease-out;
 }
 
@@ -45,12 +44,17 @@ h2{
     visibility: visible;
     z-index: 1;
 }
+
+#goToRegister:hover .pageText{
+    visibility: visible;
+    z-index: 1;
+}
 #goToAnalyse{
     position: relative;
 }
 #goToOmr{
     position: relative;
 }
-
-h2{
+#goToRegister{
+    position: relative;
 }
