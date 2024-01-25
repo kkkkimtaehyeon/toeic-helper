@@ -93,43 +93,42 @@ const clearOmr = () =>{
     }
 }
 
-const createOmrLc = () =>{
-    omrTitle.innerHTML = 'LC';
-    clearOmr();
-    for(let i = 1; i <= 5; i++){
-        let section = document.getElementById('section' + i);
-        let firstNumber = 1+(i-1)*20;
-        let lastNumber = i * 20;
-        attachChoiceListOnSection('LC', section, firstNumber, lastNumber);
+class RenderOmr{
+    createOmrLc (omrType){
+        omrTitle.innerHTML = omrType;
+        clearOmr();
+        for(let i = 1; i <= 5; i++){
+            let section = document.getElementById('section' + i);
+            let firstNumber = 1+(i-1)*20;
+            let lastNumber = i * 20;
+            attachChoiceListOnSection(omrType, section, firstNumber, lastNumber);
+        }
     }
-    // attachChoiceListOnSection('LC',section1,1,20);
-    // attachChoiceListOnSection('LC',section2,21,40);
-    // attachChoiceListOnSection('LC',section3,41,60);
-    // attachChoiceListOnSection('LC',section4,61,80);
-    // attachChoiceListOnSection('LC',section5,81,100);
+
+    createOmrRc(omrType){
+        omrTitle.innerHTML = omrType;
+        clearOmr();
+        attachChoiceListOnSection(omrType,section1,101,120);
+        attachChoiceListOnSection(omrType,section2,121,140);
+        attachChoiceListOnSection(omrType,section3,141,160);
+        attachChoiceListOnSection(omrType,section4,161,180);
+        attachChoiceListOnSection(omrType,section5,181,200);
+    }
 }
 
-const createOmrRc = () =>{
-    omrTitle.innerHTML = 'RC';
-    clearOmr();
-    attachChoiceListOnSection('RC',section1,101,120);
-    attachChoiceListOnSection('RC',section2,121,140);
-    attachChoiceListOnSection('RC',section3,141,160);
-    attachChoiceListOnSection('RC',section4,161,180);
-    attachChoiceListOnSection('RC',section5,181,200);
-}
 
+const renderOmr = new RenderOmr();
 const initOmr = () =>{
-    createOmrLc();
+    renderOmr.createOmrLc('LC');
 }
 initOmr();
 
 lcBtn.addEventListener('click', () => {
-    createOmrLc();
+    renderOmr.createOmrLc('LC');
 });
 
 rcBtn.addEventListener('click', () => {
-    createOmrRc();
+    renderOmr.createOmrRc('RC');
 });
 
 saveBtn.addEventListener('click', () =>{
