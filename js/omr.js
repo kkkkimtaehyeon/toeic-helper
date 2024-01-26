@@ -118,6 +118,7 @@ class RenderOmr{
 
 
 const renderOmr = new RenderOmr();
+
 const initOmr = () =>{
     renderOmr.createOmrLc('LC');
 }
