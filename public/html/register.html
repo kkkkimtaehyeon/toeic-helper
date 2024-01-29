@@ -3,10 +3,18 @@
     <head>
         <meta charset="UTF-8">
         <title>답안지 등록</title>
-        <!-- <link rel="stylesheet" href="../css/register.css"> -->
+        <link rel="stylesheet" href="../css/register.css">
     </head>
     <body>
-        <input type="file" class="upload" accept="image/*"">
+        <input type="file" id="imgInput" accept="image/*"">
+        <div id="img-container">
+            <img id="preivew" src="">
+        </div>
+        
+
+
+        <input type="text" id="nameFile" placeholder="답안지의 이름을 입력">
+        <button id="saveBtn">저장</button>
         <button id="registerBtn">답안지 등록</button>
         
 

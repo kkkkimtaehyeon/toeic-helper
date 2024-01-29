@@ -1,13 +1,12 @@
 //유저 답안 json배열로 저장, 답안지 json배열로 저장하고 비교해서 채점
-
 const FormData = require('form-data')
 const axios = require('axios')
 const fs = require('fs');
-const { start } = require('repl');
 
 const APIGW_INVOKE_URL = 'https://iy0skh820i.apigw.ntruss.com/custom/v1/27974/9f9aa83c0f6515affddbea27dab0b367895f919cc02125a1b165f037bcb40231/general';
 const SECRET_KEY = 'YXhlbEJna2ZJZUxLblR2TmN5RkVXVUZvUEdISlVQSGs=';
 const IMGAGE_SOURCE = './public/images/answer-example.jpg';
+
 
 const UPPERCASE_LETTERS = /[A-Z]/g;
 
@@ -53,9 +52,6 @@ function generateRequestId() {
             //registerAnswersheet(res.data);
             return res.data;
           }
-
-          
-          
           //console.log(typeof res);
           
         }
@@ -64,6 +60,9 @@ function generateRequestId() {
         console.warn('requestWithFile error', e.response)
       });
 } */
+//axios post를 await 해줌으로써 해결
+
+/**OCR API */
 async function requestWithFile() {
   const file = fs.createReadStream(IMGAGE_SOURCE);
   const message = {
@@ -101,10 +100,11 @@ async function requestWithFile() {
       }
   } catch (error) {
       console.warn('requestWithFile error', error.response);
-      throw error; // Re-throw the error to propagate it to the caller
+      throw error;
   }
 }
 
+/**OCR 실행 */
 function executeOCR(){
   requestWithFile()
     .then(data => registerAnswersheet(data))
@@ -112,13 +112,12 @@ function executeOCR(){
         console.error('Error:', error);
     });
 }
-async function registerAnswersheet(data){
-  let answersheet = [];
-  let promise = new Promise((resolve,reject) => {
-    resolve(converDataToArray(data))
-  });
 
-  answersheet = await promise;
+
+function registerAnswersheet(data){
+  let answersheet = [];
+
+  answersheet = converDataToArray(data);
   saveAnswerSheetAsFile(answersheet);
 }
 
@@ -129,10 +128,10 @@ function saveAnswerSheetAsFile(answersheet){
   //localStorage.setItem("answersheet1", jsonString);//로컬스토리지에 저장
   fs.writeFile('answer1.json',jsonString,(err) =>{
     if(err) throw err;
-    console.log('저장되었습니다');
+    console.log('새로운 답안지가 저장되었습니다');
+
   });
 }
-
 
 /**string으로 변환된 답안지에서 알파벳만 추출하여 array로 변환 */
 function converDataToArray(data){
@@ -142,7 +141,6 @@ function converDataToArray(data){
   return answerArray;
 }
 
-/**ocr이 한번 field에서 인덱스와 답을 같이 인식하는 경우가 있어서 문자열로 변환 */
 /* function convertDataToString(data){
   let startIndex = findStartIndex(data);
   let answerString = "";
@@ -153,6 +151,8 @@ function converDataToArray(data){
   }
   return answerString;
 } */
+
+/**ocr이 한번 field에서 인덱스와 답을 같이 인식하는 경우가 있어서 문자열로 변환 */
 function convertDataToString(data){
   let startIndex = findStartIndex(data);
   let answerString = "";
@@ -175,4 +175,4 @@ function findStartIndex(data){
   return startIndex;
 }
 
-module.exports = {requestWithFile, registerAnswersheet,executeOCR};
+module.exports = {executeOCR};
