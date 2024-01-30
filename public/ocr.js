@@ -5,7 +5,7 @@ const fs = require('fs');
 
 const APIGW_INVOKE_URL = 'https://iy0skh820i.apigw.ntruss.com/custom/v1/27974/9f9aa83c0f6515affddbea27dab0b367895f919cc02125a1b165f037bcb40231/general';
 const SECRET_KEY = 'YXhlbEJna2ZJZUxLblR2TmN5RkVXVUZvUEdISlVQSGs=';
-const IMGAGE_SOURCE = './public/images/answer-example.jpg';
+//const IMGAGE_SOURCE = './public/images/answer-example.jpg';
 
 
 const UPPERCASE_LETTERS = /[A-Z]/g;
@@ -63,7 +63,7 @@ function generateRequestId() {
 //axios post를 await 해줌으로써 해결
 
 /**OCR API */
-async function requestWithFile() {
+async function requestWithFile(IMGAGE_SOURCE) {
   const file = fs.createReadStream(IMGAGE_SOURCE);
   const message = {
       images: [
@@ -105,8 +105,8 @@ async function requestWithFile() {
 }
 
 /**OCR 실행 */
-function executeOCR(){
-  requestWithFile()
+function executeOCR(IMGAGE_SOURCE){
+  requestWithFile(IMGAGE_SOURCE)
     .then(data => registerAnswersheet(data))
     .catch(error => {
         console.error('Error:', error);
@@ -166,11 +166,16 @@ function convertDataToString(data){
 
 /**1번문제의 인덱스를 찾음 */
 function findStartIndex(data){
-  for(let i = 0; i < data.images[0].fields.length; i++){
-    if(data.images[0].fields[i].inferText === '1'){
-      startIndex = i;
-      break;
+  try{
+    for(let i = 0; i < data.images[0].fields.length; i++){
+      if(data.images[0].fields[i].inferText === '1'){
+        startIndex = i;
+        break;
+      }
     }
+  }
+  catch(error){
+    console.log('wrong img');     
   }
   return startIndex;
 }
