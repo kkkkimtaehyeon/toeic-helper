@@ -2,11 +2,10 @@
 const FormData = require('form-data')
 const axios = require('axios')
 const fs = require('fs');
+const path = require("path");
 
 const APIGW_INVOKE_URL = 'https://iy0skh820i.apigw.ntruss.com/custom/v1/27974/9f9aa83c0f6515affddbea27dab0b367895f919cc02125a1b165f037bcb40231/general';
 const SECRET_KEY = 'YXhlbEJna2ZJZUxLblR2TmN5RkVXVUZvUEdISlVQSGs=';
-//const IMGAGE_SOURCE = './public/images/answer-example.jpg';
-
 
 const UPPERCASE_LETTERS = /[A-Z]/g;
 
@@ -105,52 +104,41 @@ async function requestWithFile(IMGAGE_SOURCE) {
 }
 
 /**OCR 실행 */
-function executeOCR(IMGAGE_SOURCE){
+function executeOCR(IMGAGE_SOURCE, title){
   requestWithFile(IMGAGE_SOURCE)
-    .then(data => registerAnswersheet(data))
+    .then(data => registerAnswersheet(data, title))
     .catch(error => {
-        console.error('Error:', error);
+        console.error('Error:');
     });
 }
 
 
-function registerAnswersheet(data){
+function registerAnswersheet(data, title){
   let answersheet = [];
 
-  answersheet = converDataToArray(data);
-  saveAnswerSheetAsFile(answersheet);
+  answersheet = convertDataToArray(data);
+  saveAnswerSheetAsFile(answersheet, title);
 }
 
 
 /**배열을 파일에 저장 */
-function saveAnswerSheetAsFile(answersheet){
+function saveAnswerSheetAsFile(answersheet, title){
   const jsonString = JSON.stringify(answersheet)
-  //localStorage.setItem("answersheet1", jsonString);//로컬스토리지에 저장
-  fs.writeFile('answer1.json',jsonString,(err) =>{
+  
+  fs.writeFile(`./public/answersheet/${title}.json`,jsonString,(err) =>{
     if(err) throw err;
-    console.log('새로운 답안지가 저장되었습니다');
+    console.log(`새로운 답안지: ${title}가 저장되었습니다`);
 
   });
 }
 
 /**string으로 변환된 답안지에서 알파벳만 추출하여 array로 변환 */
-function converDataToArray(data){
+function convertDataToArray(data){
   let answerString = convertDataToString(data);
   let answerArray = answerString.match(UPPERCASE_LETTERS);
 
   return answerArray;
 }
-
-/* function convertDataToString(data){
-  let startIndex = findStartIndex(data);
-  let answerString = "";
-  
-  for(let i = startIndex; i < data.images[0].fields.length ; i++){
-    let element = data.images[0].fields[i].inferText;
-    answerString += element;
-  }
-  return answerString;
-} */
 
 /**ocr이 한번 field에서 인덱스와 답을 같이 인식하는 경우가 있어서 문자열로 변환 */
 function convertDataToString(data){

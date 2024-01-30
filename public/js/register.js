@@ -1,5 +1,3 @@
-
-
 const registerBtn = document.getElementById("registerBtn");
 const saveBtn = document.getElementById('saveBtn');
 const imgInput = document.getElementById('imgInput');//input 파일
@@ -21,13 +19,14 @@ function handleRegistration() {
 }
 
 function uploadImg(){
-    let file = imgInput.files[0];
-    file.name = fName.value;
+    const file = imgInput.files[0];
+    const fileName = fName.value;
 
     if(file){
         const formData = new FormData();
         
         formData.append('image', file);
+        formData.append('name',fileName);
 
         fetch('/upload', {
             method: 'POST',
