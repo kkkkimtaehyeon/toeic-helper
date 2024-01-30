@@ -17,7 +17,7 @@ const circle = document.getElementsByClassName('circle');
 let userAnswerSheet = new Map();
 
 gradingBtn.addEventListener('click', () =>{
-    location.href
+    location.href = "../html/selectAnswersheet.html";
 })
 /**유저가 클릭한 답을 마킹*/
 const markingAnswer = (problemNumber, userAnswer) =>{
