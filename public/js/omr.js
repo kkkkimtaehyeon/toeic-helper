@@ -16,9 +16,34 @@ const circle = document.getElementsByClassName('circle');
 
 let userAnswerSheet = new Map();
 
-gradingBtn.addEventListener('click', () =>{
-    location.href = "../html/selectAnswersheet.html";
-})
+function render(omrType) {
+    let startIndex = 0;
+    let endIndex = 0;
+    if(omrType === 'LC'){
+        startIndex = 1;
+        endIndex = 100;
+    }
+    else{
+        startIndex = 101;
+        endIndex = 200;
+    }
+
+    let keysArray = Array.from(userAnswerSheet.keys());
+    console.log(keysArray.length);
+
+    for(let i = 0; i < keysArray.length; i++){
+        let answerIndex = keysArray[i];
+        if(parseInt(answerIndex) >= startIndex && parseInt(answerIndex) <= endIndex){
+            let target = document.getElementById(answerIndex);
+
+            let userAnswerIndex = userAnswerSheet.get(answerIndex).charCodeAt(0) - 65;
+
+            target.childNodes[userAnswerIndex].classList.add("clicked");
+        }
+    }
+
+}
+
 /**유저가 클릭한 답을 마킹*/
 const markingAnswer = (problemNumber, userAnswer) =>{
     userAnswerSheet.set(problemNumber, userAnswer);
@@ -79,13 +104,11 @@ const attachChoiceListOnSection = (type, section, start, end) => {
         choiceList.appendChild(createChoices(type, index));
 
         section.appendChild(choiceList);
-
     }
-
 };
 
 /**omr 초기화 */
-const clearOmr = () =>{
+function clearOmr() {
     for (let i = 1; i <= 5; i++) {
         let sectionId = "section" + i;
         let parentElement = document.getElementById(sectionId);
@@ -96,8 +119,8 @@ const clearOmr = () =>{
     }
 }
 
-class RenderOmr{
-    createOmrLc (omrType){
+class Omr{
+    create_LC (omrType){
         omrTitle.innerHTML = omrType;
         clearOmr();
         for(let i = 1; i <= 5; i++){
@@ -106,9 +129,10 @@ class RenderOmr{
             let lastNumber = i * 20;
             attachChoiceListOnSection(omrType, section, firstNumber, lastNumber);
         }
+        render(omrType);
     }
 
-    createOmrRc(omrType){
+    create_RC(omrType){
         omrTitle.innerHTML = omrType;
         clearOmr();
         attachChoiceListOnSection(omrType,section1,101,120);
@@ -116,23 +140,24 @@ class RenderOmr{
         attachChoiceListOnSection(omrType,section3,141,160);
         attachChoiceListOnSection(omrType,section4,161,180);
         attachChoiceListOnSection(omrType,section5,181,200);
+        render(omrType);
     }
 }
 
 
-const renderOmr = new RenderOmr();
+const renderOmr = new Omr();
 
 const initOmr = () =>{
-    renderOmr.createOmrLc('LC');
+    renderOmr.create_LC('LC');
 }
 initOmr();
 
 lcBtn.addEventListener('click', () => {
-    renderOmr.createOmrLc('LC');
+    renderOmr.create_LC('LC');
 });
 
 rcBtn.addEventListener('click', () => {
-    renderOmr.createOmrRc('RC');
+    renderOmr.create_RC('RC');
 });
 
 saveBtn.addEventListener('click', () =>{
@@ -140,20 +165,10 @@ saveBtn.addEventListener('click', () =>{
     localStorage.setItem('userAnswerSheet', jsonMap);
 });
 
-/** 유저의 omr카드를 불러옴 */
-const getUserAnswerSheet = () =>{
-    let storedData = localStorage.getItem('userAnswerSheet');
-    if(storedData){
-        let parsedData = JSON.parse(storedData);
-        let loadedUserAnswerSheet = new Map(parsedData);
+gradingBtn.addEventListener('click', () =>{
+    location.href = "../html/grading.html";
+})
 
-        return loadedUserAnswerSheet;
-    }
-    else{
-        alert('저장된 OMR이 없습니다!');
-    }
-
-}
 
 
 

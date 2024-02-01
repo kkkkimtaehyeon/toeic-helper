@@ -13,6 +13,8 @@ function handleRegistration() {
         method: 'POST',
     })
     .then(response => response.json())
+    .then(alert('답안지가 등록되었습니다!'))
+    .then(window.location.href='/')
     .catch(error =>{
         console.error('OCR요청 실패',error);
     });
