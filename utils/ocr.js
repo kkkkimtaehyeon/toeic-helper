@@ -7,7 +7,6 @@ const path = require("path");
 const APIGW_INVOKE_URL = 'https://iy0skh820i.apigw.ntruss.com/custom/v1/27974/9f9aa83c0f6515affddbea27dab0b367895f919cc02125a1b165f037bcb40231/general';
 const SECRET_KEY = 'YXhlbEJna2ZJZUxLblR2TmN5RkVXVUZvUEdISlVQSGs=';
 
-const UPPERCASE_LETTERS = /[A-Z]/g;
 
 function generateRequestId() {
     const timestamp = new Date().getTime();
@@ -116,14 +115,14 @@ function executeOCR(IMGAGE_SOURCE, title){
 function registerAnswersheet(data, title){
   let answersheet = [];
 
-  answersheet = convertDataToArray(data);
-  saveAnswerSheetAsFile(answersheet, title);
+  answersheet = convertDataToString(data);
+  saveAnswerSheetAsFile(normalizing(answersheet), title);
 }
 
 
 /**배열을 파일에 저장 */
 function saveAnswerSheetAsFile(answersheet, title){
-  const jsonString = JSON.stringify(answersheet)
+  const jsonString = JSON.stringify(Array.from(answersheet.entries()));
   
   fs.writeFile(`./public/answersheet/${title}.json`,jsonString,(err) =>{
     if(err) throw err;
@@ -133,13 +132,36 @@ function saveAnswerSheetAsFile(answersheet, title){
 }
 
 /**string으로 변환된 답안지에서 알파벳만 추출하여 array로 변환 */
-function convertDataToArray(data){
+/* function convertDataToArray(data){
   let answerString = convertDataToString(data);
   let answerArray = answerString.match(UPPERCASE_LETTERS);
 
   return answerArray;
-}
+} */
 
+function normalizing(answerString){
+
+  answerString = answerString.replace(/\s/g, "");
+  
+  let user = [];
+  user = answerString.split(")");
+  const total = [];
+  let temp = [];
+  
+  for(let i = 0; i < 200; i++){
+    temp = user[i].split("(");
+    total.push(temp);
+  }
+
+  const answerMap = new Map();
+
+  total.forEach(function(element){
+    answerMap.set(element[0], element[1]);
+  });
+
+  return answerMap;
+  // 맵으로 바꿔서 json으로 저장
+}
 /**ocr이 한번 field에서 인덱스와 답을 같이 인식하는 경우가 있어서 문자열로 변환 */
 function convertDataToString(data){
   let startIndex = findStartIndex(data);
@@ -149,6 +171,7 @@ function convertDataToString(data){
     let element = data.images[0].fields[i].inferText;
     answerString += element;
   }
+  
   return answerString;
 }
 
@@ -161,8 +184,7 @@ function findStartIndex(data){
         break;
       }
     }
-  }
-  catch(error){
+  }catch(error){
     console.log('wrong img');     
   }
   return startIndex;

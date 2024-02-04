@@ -29,7 +29,6 @@ function render(omrType) {
     }
 
     let keysArray = Array.from(userAnswerSheet.keys());
-    console.log(keysArray.length);
 
     for(let i = 0; i < keysArray.length; i++){
         let answerIndex = keysArray[i];
