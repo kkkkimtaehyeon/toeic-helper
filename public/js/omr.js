@@ -161,8 +161,9 @@ rcBtn.addEventListener('click', () => {
 });
 
 saveBtn.addEventListener('click', () =>{
+    const title = document.getElementById("inputTitle").value;
     let jsonMap = JSON.stringify(Array.from(userAnswerSheet.entries()));
-    localStorage.setItem('userAnswerSheet', jsonMap);
+    localStorage.setItem(title, jsonMap);
 });
 
 gradingBtn.addEventListener('click', () =>{
